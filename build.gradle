@@ -1,1 +1,23 @@
-plugins { id 'java' }
+plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.2'
+    id 'java'
+}
+
+version = '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'tilesheet.Main'
+    }
+}
+
+jar.enabled = false
+build.dependsOn shadowJar
