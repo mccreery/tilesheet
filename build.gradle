@@ -19,5 +19,9 @@ jar {
     }
 }
 
+processResources {
+    exclude '**/.keep'
+}
+
 jar.enabled = false
 build.dependsOn shadowJar
