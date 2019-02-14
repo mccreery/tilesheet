@@ -1,6 +1,7 @@
 package tilesheet;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,6 +47,7 @@ public class TilesheetViewer extends JPanel {
 
         g.setColor(Color.RED);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+        g.setStroke(new BasicStroke(0.75f));
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for(Rectangle rectangle : new ImageTileList(image, context)) {
