@@ -13,8 +13,8 @@ public class ImageTileList extends AbstractList<Rectangle> {
     public ImageTileList(BufferedImage image, ConversionContext context) {
         this.context = context;
 
-        tileCountX = (image.getWidth() + context.tileSpacing.x) / context.tileSize.x;
-        tileCountY = (image.getHeight() + context.tileSpacing.y) / context.tileSize.y;
+        tileCountX = (image.getWidth() + context.tileSpacing.x) / (context.tileSize.x + context.tileSpacing.x);
+        tileCountY = (image.getHeight() + context.tileSpacing.y) / (context.tileSize.y + context.tileSpacing.y);
         size = tileCountX * tileCountY;
     }
 
