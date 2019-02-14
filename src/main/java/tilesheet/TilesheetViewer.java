@@ -29,14 +29,19 @@ public class TilesheetViewer extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         if(image == null || context == null) return;
 
         Rectangle imageBounds = new Rectangle(image.getWidth(), image.getHeight());
+        Rectangle imageBoundsNew = letterBox(imageBounds, g.getClipBounds());
+        drawCheckerboard(g, imageBoundsNew, 8);
+
         Graphics graphicsCopy = g.create();
 
         if(graphicsCopy instanceof Graphics2D) {
             Graphics2D g2d = (Graphics2D)graphicsCopy;
-            g2d.transform(mapSpace(imageBounds, letterBox(imageBounds, g.getClipBounds())));
+            g2d.transform(mapSpace(imageBounds, letterBox(imageBounds, imageBoundsNew)));
 
             paintImageAndTiles(g2d);
         }
@@ -53,6 +58,24 @@ public class TilesheetViewer extends JPanel {
         for(Rectangle rectangle : new ImageTileList(image, context)) {
             g.setClip(rectangle);
             g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        }
+    }
+
+    private static void drawCheckerboard(Graphics g, Rectangle bounds, int checkerSize) {
+        g = g.create();
+        g.setClip(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        Rectangle checker = new Rectangle(bounds.x, bounds.y, checkerSize, checkerSize);
+
+        for(int y = 0; checker.y < bounds.y + bounds.height; y++) {
+            for(int x = 0; checker.x < bounds.x + bounds.width; x++) {
+                g.setColor(((x + y) & 1) == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+                g.fillRect(checker.x, checker.y, checker.width, checker.height);
+
+                checker.x += checkerSize;
+            }
+            checker.x = bounds.x;
+            checker.y += checkerSize;
         }
     }
 
