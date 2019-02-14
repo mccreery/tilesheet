@@ -46,7 +46,7 @@ public class ArgsHandler {
             Integer.parseUnsignedInt(commandLine.getOptionValue("w", "8")),
             Integer.parseUnsignedInt(commandLine.getOptionValue("h", "8"))
         );
-        context.tileSize = new Point(
+        context.tileSpacing = new Point(
             Integer.parseUnsignedInt(commandLine.getOptionValue("u", "0")),
             Integer.parseUnsignedInt(commandLine.getOptionValue("v", "0"))
         );

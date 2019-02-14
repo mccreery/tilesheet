@@ -8,6 +8,7 @@ public class ConversionContext {
     public Point tileSpacing = new Point();
     public Majority tileOrder = ROW;
     public Majority targetMemoryOrder = ROW;
+    public int colorType;
 
     public enum Majority {
         ROW("row-major"), COLUMN("column-major");
@@ -22,8 +23,8 @@ public class ConversionContext {
     }
 
     public String getDetails() {
-        return String.format("tile size %dx%d%ntile spacing %dx%d%ntile order %s%ntarget memory order %s",
+        return String.format("tile size %dx%d%ntile spacing %dx%d%ntile order %s%ntarget memory order %s%ncolor type %s",
             tileSize.x, tileSize.y, tileSpacing.x, tileSpacing.y,
-            tileOrder.toString().toLowerCase(), targetMemoryOrder.toString().toLowerCase());
+            tileOrder.toString().toLowerCase(), targetMemoryOrder.toString().toLowerCase(), colorType);
     }
 }

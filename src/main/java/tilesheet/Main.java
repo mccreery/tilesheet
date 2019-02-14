@@ -1,5 +1,10 @@
 package tilesheet;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
+
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import tilesheet.ArgsHandler;
@@ -18,6 +23,32 @@ public class Main {
         } else {
             System.out.println(argsHandler.getContext().getDetails());
             System.out.println();
+
+            for(Path path : argsHandler.getImageFiles()) {
+                tryConvertImage(path, path.resolveSibling("converted-" + path.getFileName()), argsHandler.getContext());
+            }
         }
+    }
+
+    /**
+     * @return {@code true} if the image was successfully converted.
+     */
+    private static boolean tryConvertImage(Path inPath, Path outPath, ConversionContext context) {
+        BufferedImage image;
+        try {
+            image = ImageIO.read(inPath.toFile());
+        } catch(IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        BufferedImage stitched = TilesheetConverter.stitch(context, image);
+        try {
+            ImageIO.write(stitched, "png", outPath.toFile());
+        } catch(IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
