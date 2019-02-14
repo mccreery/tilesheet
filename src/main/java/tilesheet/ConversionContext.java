@@ -1,6 +1,8 @@
 package tilesheet;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+
 import static tilesheet.ConversionContext.Majority.*;
 
 public class ConversionContext {
@@ -8,7 +10,7 @@ public class ConversionContext {
     public Point tileSpacing = new Point();
     public Majority tileOrder = ROW;
     public Majority targetMemoryOrder = ROW;
-    public int colorType;
+    public int colorType = BufferedImage.TYPE_INT_ARGB;
 
     public enum Majority {
         ROW("row-major"), COLUMN("column-major");

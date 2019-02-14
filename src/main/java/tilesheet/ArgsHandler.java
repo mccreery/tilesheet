@@ -16,6 +16,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import tilesheet.ConversionContext.Majority;
+
 public class ArgsHandler {
     private final Options options = new Options();
     private final CommandLine commandLine;
@@ -29,6 +31,7 @@ public class ArgsHandler {
         options.addOption("h", "tile-height", true, "set the tile height");
         options.addOption("u", "col-spacing", true, "set the horizontal spacing");
         options.addOption("v", "row-spacing", true, "set the vertical spacing");
+        options.addOption(null, "col-major", false, "set the output to column-major order");
 
         CommandLineParser parser = new DefaultParser();
         try {
@@ -50,6 +53,8 @@ public class ArgsHandler {
             Integer.parseUnsignedInt(commandLine.getOptionValue("u", "0")),
             Integer.parseUnsignedInt(commandLine.getOptionValue("v", "0"))
         );
+
+        context.targetMemoryOrder = commandLine.hasOption("col-major") ? Majority.COLUMN : Majority.ROW;
     }
 
     public boolean isHelpCommand() {

@@ -25,7 +25,9 @@ public class Main {
             System.out.println();
 
             for(Path path : argsHandler.getImageFiles()) {
-                tryConvertImage(path, path.resolveSibling("converted-" + path.getFileName()), argsHandler.getContext());
+                if(tryConvertImage(path, path.resolveSibling("converted-" + path.getFileName()), argsHandler.getContext())) {
+                    System.out.println(path + " successfully converted");
+                }
             }
         }
     }
