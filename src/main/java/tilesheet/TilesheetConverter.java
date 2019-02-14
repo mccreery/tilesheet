@@ -17,7 +17,7 @@ public class TilesheetConverter {
         } else {
             tileRect = new Rectangle(0, 0, context.tileSize.y, context.tileSize.x);
         }
-        List<BufferedImage> tiles = new ImageTileList(image, context);
+        List<Rectangle> tiles = new ImageTileList(image, context);
 
         BufferedImage out;
         out = new BufferedImage(tileRect.width, tileRect.height * tiles.size(), context.colorType);
@@ -25,7 +25,9 @@ public class TilesheetConverter {
         Graphics2D graphics = (Graphics2D)out.getGraphics();
         AffineTransformOp op = getTransposeOp();
 
-        for(BufferedImage tile : tiles) {
+        for(Rectangle tileSourceRect : tiles) {
+            BufferedImage tile = image.getSubimage(tileSourceRect.x, tileSourceRect.y, tileSourceRect.width, tileSourceRect.height);
+
             if(context.targetMemoryOrder == ROW) {
                 graphics.drawImage(tile, tileRect.x, tileRect.y, null);
             } else {

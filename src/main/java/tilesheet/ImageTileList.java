@@ -1,17 +1,16 @@
 package tilesheet;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.AbstractList;
 
 import static tilesheet.ConversionContext.Majority.*;
 
-public class ImageTileList extends AbstractList<BufferedImage> {
-    private final BufferedImage image;
+public class ImageTileList extends AbstractList<Rectangle> {
     private final ConversionContext context;
     private final int tileCountX, tileCountY, size;
 
     public ImageTileList(BufferedImage image, ConversionContext context) {
-        this.image = image;
         this.context = context;
 
         tileCountX = (image.getWidth() + context.tileSpacing.x) / context.tileSize.x;
@@ -20,7 +19,7 @@ public class ImageTileList extends AbstractList<BufferedImage> {
     }
 
     @Override
-    public BufferedImage get(int index) {
+    public Rectangle get(int index) {
         if(index < 0 || index >= size) throw new IndexOutOfBoundsException();
 
         int tileX, tileY;
@@ -32,7 +31,7 @@ public class ImageTileList extends AbstractList<BufferedImage> {
             tileY = index % tileCountY;
         }
 
-        return image.getSubimage(
+        return new Rectangle(
             tileX * (context.tileSize.x + context.tileSpacing.x),
             tileY * (context.tileSize.y + context.tileSpacing.y),
             context.tileSize.x, context.tileSize.y);
