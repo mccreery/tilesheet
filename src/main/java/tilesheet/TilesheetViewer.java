@@ -1,9 +1,11 @@
 package tilesheet;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -41,9 +43,13 @@ public class TilesheetViewer extends JPanel {
 
     private void paintImageAndTiles(Graphics2D g) {
         g.drawImage(image, null, 0, 0);
-        g.setColor(Color.RED);
 
+        g.setColor(Color.RED);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for(Rectangle rectangle : new ImageTileList(image, context)) {
+            g.setClip(rectangle);
             g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         }
     }
@@ -68,8 +74,8 @@ public class TilesheetViewer extends JPanel {
      * @return A scaled and translated rectangle.
      */
     private static Rectangle letterBox(Rectangle inner, Rectangle outer) {
-        float innerAspect = inner.width / inner.height;
-        float outerAspect = outer.width / outer.height;
+        float innerAspect = (float)inner.width / inner.height;
+        float outerAspect = (float)outer.width / outer.height;
 
         if(innerAspect > outerAspect) {
             // top/bottom bars ('tall')

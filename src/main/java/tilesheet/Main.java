@@ -14,7 +14,21 @@ public class Main {
         ArgsHandler argsHandler = new ArgsHandler(args);
 
         if(argsHandler.shouldShowGui()) {
-            JOptionPane.showMessageDialog(null, "gui");
+            GuiFrame frame = new GuiFrame();
+            frame.setVisible(true);
+            frame.setContext(argsHandler.getContext());
+
+            if(!argsHandler.getImageFiles().isEmpty()) {
+                Path path = argsHandler.getImageFiles().get(0);
+                try {
+                    frame.setImage(ImageIO.read(path.toFile()));
+                } catch(IOException e) {
+                    e.printStackTrace();
+                    String message = String.format("Could not read input file \"%s\":%n%s", path, e.getMessage());
+
+                    JOptionPane.showMessageDialog(frame, message, "Error loading image", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         } else if(argsHandler.isHelpCommand()) {
             argsHandler.printHelp();
         } else if(argsHandler.getImageFiles().isEmpty()) {
