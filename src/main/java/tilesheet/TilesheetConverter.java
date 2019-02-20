@@ -20,7 +20,7 @@ public class TilesheetConverter {
         List<Rectangle> tiles = new ImageTileList(image, context);
 
         BufferedImage out;
-        out = new BufferedImage(tileRect.width, tileRect.height * tiles.size(), context.colorType);
+        out = new BufferedImage(tileRect.width, tileRect.height * tiles.size(), context.colorType.colorType);
 
         Graphics2D graphics = (Graphics2D)out.getGraphics();
         AffineTransformOp op = getTransposeOp();
