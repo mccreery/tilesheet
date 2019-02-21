@@ -23,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import tilesheet.ConversionContext.Majority;
+
 public class GuiFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
@@ -97,10 +99,21 @@ public class GuiFrame extends JFrame {
                             ImageIO.write(stitched, "png", file);
                         } else {
                             byte[] data = getRawBytes(stitched.getRaster().getDataBuffer(), ByteOrder.BIG_ENDIAN);
-                            String source = ext.equals("asm") ? HexUtil.getAvrDb(cleanName, data, 16) : HexUtil.getCArray(cleanName, data, 16);
 
-                            try(PrintWriter writer = new PrintWriter(file)) {
-                                writer.write(source);
+                            if(ext.equals("c")) {
+                                File headerFile = new File(FileUtil.filePathNoExt(file.getPath()) + ".h");
+                                int numChars = new ImageTileList(image, context).size();
+                                int bpp = stitched.getColorModel().getPixelSize();
+
+                                try(PrintWriter sourceWriter = new PrintWriter(file);
+                                        PrintWriter headerWriter = new PrintWriter(headerFile)) {
+                                    sourceWriter.write(HexUtil.getCSource(headerFile, data));
+                                    headerWriter.write(HexUtil.getCHeader(headerFile, numChars, bpp, context.tileSize.x, context.tileSize.y, context.targetMemoryOrder == Majority.COLUMN));
+                                }
+                            } else if(ext.equals("asm")) {
+                                try(PrintWriter writer = new PrintWriter(file)) {
+                                    writer.write(HexUtil.getAvrDb(cleanName, data, 8));
+                                }
                             }
                         }
                     } catch(IOException ex) {
@@ -141,7 +154,7 @@ public class GuiFrame extends JFrame {
         rightPanel.setContext(context);
     }
 
-    private static byte[] getRawBytes(DataBuffer buffer, ByteOrder order) {
+    public static byte[] getRawBytes(DataBuffer buffer, ByteOrder order) {
         if(buffer instanceof DataBufferByte) {
             return ((DataBufferByte)buffer).getData();
         } else if(buffer instanceof DataBufferUShort) {
