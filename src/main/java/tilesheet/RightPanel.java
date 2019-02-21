@@ -61,7 +61,8 @@ public class RightPanel extends JPanel {
     public enum ColorType {
         INT_ARGB(BufferedImage.TYPE_INT_ARGB),
         USHORT_565_RGB(BufferedImage.TYPE_USHORT_565_RGB),
-        USHORT_555_RGB(BufferedImage.TYPE_USHORT_555_RGB);
+        USHORT_555_RGB(BufferedImage.TYPE_USHORT_555_RGB),
+        PACKED_1BPP(BufferedImage.TYPE_BYTE_BINARY);
 
         public final int colorType;
 
